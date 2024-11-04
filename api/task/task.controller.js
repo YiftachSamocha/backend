@@ -91,3 +91,16 @@ export async function removeTaskMsg(req, res) {
 		res.status(400).send({ err: 'Failed to remove task msg' })
 	}
 }
+
+
+export async function onPerformTask(req, res) {
+	const { body: task } = req
+
+	try {
+		const updatedTask = await taskService.performTask(task)
+		res.json(updatedTask)
+	} catch (err) {
+		logger.error('Failed to update task', err)
+		res.status(400).send({ err: 'Failed to update task' })
+	}
+}
