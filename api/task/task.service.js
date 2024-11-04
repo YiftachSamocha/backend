@@ -126,32 +126,32 @@ async function removeTaskMsg(taskId, msgId) {
 }
 
 function _buildCriteria(filterBy) {
-    const criteria = {};
+	const criteria = {};
 
-    // Text search on the 'title' field only
-    if (filterBy.txt) {
-        criteria.title = { $regex: filterBy.txt, $options: 'i' };
-    }
+	// Text search on the 'title' field only
+	if (filterBy.txt) {
+		criteria.title = { $regex: filterBy.txt, $options: 'i' };
+	}
 
-    // Status filter
-    const statusConditions = [];
-    if (filterBy.status.new === true || filterBy.status.new === "true") statusConditions.push("new");
-    if (filterBy.status.done === true || filterBy.status.done === "true") statusConditions.push("done");
-    if (filterBy.status.fail === true || filterBy.status.fail === "true") statusConditions.push("failed");
-    if (statusConditions.length) {
-        criteria.status = { $in: statusConditions };
-    }
+	// Status filter
+	const statusConditions = [];
+	if (filterBy.status.new === true || filterBy.status.new === "true") statusConditions.push("new");
+	if (filterBy.status.done === true || filterBy.status.done === "true") statusConditions.push("done");
+	if (filterBy.status.fail === true || filterBy.status.fail === "true") statusConditions.push("failed");
+	if (statusConditions.length) {
+		criteria.status = { $in: statusConditions };
+	}
 
-    // Importance filter
-    const importanceConditions = [];
-    if (filterBy.importance.one === true || filterBy.importance.one === "true") importanceConditions.push(1);
-    if (filterBy.importance.two === true || filterBy.importance.two === "true") importanceConditions.push(2);
-    if (filterBy.importance.three === true || filterBy.importance.three === "true") importanceConditions.push(3);
-    if (importanceConditions.length) {
-        criteria.importance = { $in: importanceConditions };
-    }
+	// Importance filter
+	const importanceConditions = [];
+	if (filterBy.importance.one === true || filterBy.importance.one === "true") importanceConditions.push(1);
+	if (filterBy.importance.two === true || filterBy.importance.two === "true") importanceConditions.push(2);
+	if (filterBy.importance.three === true || filterBy.importance.three === "true") importanceConditions.push(3);
+	if (importanceConditions.length) {
+		criteria.importance = { $in: importanceConditions };
+	}
 
-    return criteria;
+	return criteria;
 }
 
 
@@ -164,17 +164,16 @@ function _buildSort(filterBy) {
 function createData(length = 12) {
 	const taskTitles = ['Delete old files', 'Update system drivers', 'Install security patch', 'Backup database', 'Optimize database performance', 'Clear cache', 'Archive completed projects', 'Generate monthly reports', 'Check system logs', 'Run antivirus scan', 'Restart server', 'Install software updates', 'Remove inactive users', 'Monitor network traffic', 'Clean temporary files']
 	const statuses = ['new', 'running', 'done', 'failed']
+	const descriptions = ['Match files by size and name, remove duplicates', 'Optimize image assets', 'Implement JWT authentication', 'Create responsive design', 'Set up CI/CD pipeline', 'Integrate third-party API', 'Refactor legacy code', 'Design user-friendly dashboard', 'Implement data validation', 'Write unit tests']
 	const randomDates1 = ['2023-01-15', '2023-05-22', '2022-07-10', '2022-10-18', '2023-09-05', '2022-04-30', '2023-03-12', '2023-07-28', '2022-11-11', '2023-08-01']
-
 	const randomDates2 = ['2022-02-14', '2023-06-09', '2023-12-25', '2022-08-19', '2023-04-03', '2022-12-22', '2023-10-07', '2022-03-16', '2023-11-21', '2022-05-05', null, null, null, null, null]
-
 	const errorMessages = ['Device is busy', 'Network timeout', 'File not found', 'Access denied', 'Disk space low', 'Invalid input format', 'Operation timed out', 'System error occurred', 'Permission denied', 'Unknown error', 'Resource unavailable', 'Connection refused', 'File read error', 'Out of memory', 'Service unavailable']
 	var tasks = []
 	for (var i = 0; i < length; i++) {
 		const task = {
 			title: getRandomItems(taskTitles, 1),
 			status: getRandomItems(statuses, 1),
-			description: '',
+			description: getRandomItems(descriptions, 1),
 			importance: getRandomInt(1, 3),
 			createdAt: getRandomItems(randomDates1, 1),
 			lastTriedAt: getRandomItems(randomDates2, 1),
@@ -185,8 +184,8 @@ function createData(length = 12) {
 		tasks.push(task)
 	}
 	return tasks
-
 }
+
 function getRandomItems(arr, num) {
 	const shuffled = arr.sort(() => 0.5 - Math.random())
 	const result = shuffled.slice(0, num)
